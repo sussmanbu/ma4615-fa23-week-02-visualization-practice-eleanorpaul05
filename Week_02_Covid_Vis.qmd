@@ -1,7 +1,7 @@
 ---
 title: "Week 02: COVID Visualization Activity"
 date: "September, 11 2023"
-author: "**`[[`**Your Name**`]]`**"
+author: "Eleanor Paul"
 ---
 
 Today, we'll be working with a data set related to COVID.
@@ -11,6 +11,7 @@ Note, due to differences in the way race and ethnicity are encoded in the census
 
 ```{r load_data}
 library(tidyverse)
+library(ggthemes)
 load("CRDT Data.RData")
 ls()
 ```
@@ -36,6 +37,40 @@ covid_data_count |>
 ```
 
 1. Write code for a plot and describe what you observe?
+
+```{r}
+ggplot(covid_data_count, aes(x = Cases, y = Deaths)) + geom_point(mapping = aes(color = state), na.rm = TRUE, alpha = 0.3) + labs(title = "Number of Deaths vs Number of Cases by State")
+ggsave(filename = "num_deaths_vs_num_cases_by_state.png")
+
+ggplot(covid_data_count, aes(x = fct_infreq(race)), fill = Deaths, weight = Cases) + geom_bar(position = "fill")
+
+ggplot(covid_data_count, aes(x = fct_infreq(race)), fill = Cases, weight = Population) + geom_bar(position = "fill")
+
+ggplot(covid_data_count, aes(x = fct_infreq(race))) + geom_bar()
+
+ggplot(covid_data_count, aes(x = race, y = Deaths)) + geom_point(aes(color = population), alpha = 0.3)
+```
+
+" This is a scatter plot that looks at the number of deaths versus the number of cases. I also colored the points based on state. I observe that with a higher number of cases, there is a higher number of deaths. I also observed that in my bar chart, the race groups with higher populations had higher number of deaths, I tried to make a bar chart that better included this, but I could not. Instead I made a scatter plot, which ended up looking a lot like a bar chart, that better showed the relationship between race, population, and number of deaths."
+
+"I also tried my first plot plot with an added trend line:"
+
+```{r}
+ggplot(covid_data_count, aes(x = Cases, y = Deaths)) + geom_point(mapping = aes(color = state), na.rm = TRUE, alpha = 0.3) + geom_smooth(method = "lm") + labs(title = "Number of Deaths vs Number of Cases by State")
+```
+
+"This confirms the observed positive, linear relationship between the number of deaths
+and the number of cases."
+
 2. Are there any conclusions you can draw?
+
+"From my first plot, I conclude that with more cases in a given state, there are more deaths. The states with the highest number of cases and deaths were New York, Texas, and California. From the bar chart I made, I learned that the multiracial group had the fewest frequency of cases, with the white and black groups having the highest. This is likely due to the relative populations of these groups."
+
 3. What were you not able to do due to not having the R knowledge?
+
+"I was not able to scale the x-axis or y-axis to fit the data in a more readable way,
+it would have been useful to have the units on the axes account for a few orders of 10 each so that the data points could be more spread out and not as difficult to read. I tried to make a bar chart with the frequency of cases and the frequency of deaths by race, similar to what I did in question 3 of the homework, but I could not quite get it to work. I think this would have been a more interesting plot than the plot I ended up making, which was just a bar chart of the frequency of cases for each race."
+
 4. What other data would be useful to better understand this data?
+
+"It would also be useful to have more information on the population density in these states because that would allow us to observe trends if more dense states have higher cases and deaths than states with lower population density."
